@@ -19,6 +19,40 @@ describe('backend-express-template routes', () => {
         updatedAt: new Date()
       },
     ]);
+    await db.Authors.bulkCreate([
+      {
+        name: 'Geg',
+        age: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'Greg',
+        age: 333,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+    ]);
+    await db.authors_books.bulkCreate([
+      {
+        author_id: 1,
+        book_id: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        author_id: 1,
+        book_id: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        author_id: 2,
+        book_id: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+    ]);
   });
   afterAll(async () => {
     await db.sequelize.close();
@@ -32,6 +66,18 @@ describe('backend-express-template routes', () => {
       published: expect.any(String),
       createdAt: expect.any(String),
       updatedAt: expect.any(String)
+    });
+  });
+  it('gets specific book with authors', async () => {
+    const res = await request(app).get('/api/v1/books/1');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: 1,
+      title: 'A Book',
+      published: '1999',
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      Authors: expect.any(Array)
     });
   });
 });
