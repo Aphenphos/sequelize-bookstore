@@ -57,42 +57,42 @@ describe('backend-express-template routes', () => {
   afterAll(async () => {
     await db.sequelize.close();
   });
-  it('gets a list of books', async () => {
-    const res = await request(app).get('/api/v1/books');
+  it('gets a list of authors', async () => {
+    const res = await request(app).get('/api/v1/authors');
     expect(res.status).toBe(200);
     expect(res.body[0]).toEqual({
       id: expect.any(Number),
-      title: expect.any(String),
-      published: expect.any(String),
+      name: expect.any(String),
+      age: expect.any(Number),
       createdAt: expect.any(String),
       updatedAt: expect.any(String)
     });
   });
-  it('gets specific book with authors', async () => {
-    const res = await request(app).get('/api/v1/books/1');
+  it('gets specific author with their books', async () => {
+    const res = await request(app).get('/api/v1/authors/1');
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: 1,
-      title: 'A Book',
-      published: '1999',
+      name: 'Geg',
+      age: 3,
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
-      Authors: expect.any(Array)
+      Books: expect.any(Array)
     });
   });
-  it('adds a book with the author', async () => {
-    const newBook = {
-      title: 'Best Book',
-      published: '0'
+  it('adds a author with their book', async () => {
+    const newAuthor = {
+      name: 'Gdeg',
+      age: 50
     };
     const res = await request(app)
-      .post('/api/v1/books')
-      .send(newBook);
+      .post('/api/v1/authors')
+      .send(newAuthor);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       id: expect.any(Number),
-      title: 'Best Book',
-      published: '0',
+      name: 'Gdeg',
+      age: 50,
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
     });
